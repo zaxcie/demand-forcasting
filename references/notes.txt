@@ -1,0 +1,2 @@
+# Idea look at relationship between date and sales
+# Idea Look at interaction between date and item and date and store
