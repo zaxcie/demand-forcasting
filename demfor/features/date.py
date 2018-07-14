@@ -8,8 +8,13 @@ def day_of_year(series, initial_date):
     day_year_with_year_elapse = (series - initial_date).dt.days
     # TODO refactor
     day_year_serie = series.dt.dayofyear
+    day_year_serie = day_year_serie.rename("day_year")
+    day_year_with_year_elapse = day_year_serie.rename("day_year_with_year_elapse")
 
-    return day_year_serie, day_year_with_year_elapse
+    df = pd.concat([day_year_serie, day_year_with_year_elapse],
+                   axis=1)
+
+    return df, list(df)
 
 
 def day_of_month(series, initial_date):
@@ -24,14 +29,14 @@ def day_of_month(series, initial_date):
     df = pd.concat([day_month_serie, onehot_day_month_serie, onehot_day_month__counter_year_elapse_serie],
                    axis=1)
 
-    return df
+    return df, list(df)
 
 
 def weekday(series):
     df = series.dt.dayofweek
     df = df.rename("weekday")
 
-    return df
+    return df, [df.name]
 
 
 def year(series, initial_date):
@@ -46,7 +51,7 @@ def year(series, initial_date):
 
     df = pd.concat([year, onehot_year, onehot_year_elapse], axis=1)
 
-    return df
+    return df, list(df)
 
 
 def month(series, initial_date):
@@ -61,11 +66,11 @@ def month(series, initial_date):
 
     df = pd.concat([month, onehot_month, onehot_month_elapse], axis=1)
 
-    return df
+    return df, list(df)
 
 
 def week_of_year(series):
     df = series.dt.weekofyear
     df = df.rename("weekofyear")
 
-    return df
+    return df, [df.name]
