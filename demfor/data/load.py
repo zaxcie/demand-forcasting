@@ -87,7 +87,8 @@ class Dataset:
                                             (self.trainset["item"] == item_id) &
                                             (self.trainset["year"] == year)]["id"]
                     if len(X_index_train) > 365:
-                        X_index_train = np.concatenate((X_index_train[:60], X_index_train[61:]), axis=0)  # Pop 29 Feb if needed
+                        X_index_train = np.concatenate((X_index_train[:90]), axis=0)
+                        # Drop march 31 if needed
 
                     X_ts_train.append(self.train_target[self.train_target["id"].isin(X_index_train)]["sales"].tolist())
                     Y_ts_train.append(self.train_target[self.train_target["id"].isin(Y_index_train)]["sales"].tolist()[:90])
