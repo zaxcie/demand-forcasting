@@ -36,7 +36,14 @@ def find_experiment(name, experiments):
     else:  # Not sure it's possible tor reach
         return findings
 
+
 def log_metrics_from_dict(metrics):
+    '''
+
+    :param metrics: Dict of metrics from keras History callback
+    :return: Nothing
+    '''
     for metric in metrics:
-        mlflow.log_metric(metric, metrics)
+        for i in metrics[metric]:
+            mlflow.log_metric(metric, i)
 

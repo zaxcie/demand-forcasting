@@ -55,20 +55,51 @@ class Dataset:
         self.feature_names += feature_names
         print("Processed year")
 
-        # temp, feature_names = month(self.fullset["date"], self.initial_date)
-        # self.fullset = pd.concat([self.fullset, temp], axis=1)
-        # self.feature_names += feature_names
-        # print("Processed month")
+        temp, feature_names = week_of_year(self.fullset["date"])
+        self.fullset = pd.concat([self.fullset, temp], axis=1)
+        self.feature_names += feature_names
+        print("Processed week_of_year")
+
+        temp, feature_names = month(self.fullset["date"], self.initial_date)
+        self.fullset = pd.concat([self.fullset, temp], axis=1)
+        self.feature_names += feature_names
+        print("Processed month")
+
+
+        # self.fullset["median-store_item-month"] = self.fullset.groupby(['month', "item", "store"])["sales"].transform("median")
+        # self.fullset["mean-store_item-week"] = self.fullset.groupby(['week_of_year', "item", "store"])["sales"].transform("mean")
+        # self.fullset["item-month-sum"] = self.fullset.groupby(['month', "item"])["sales"].transform(
+        #     "sum")  # total sales of that item  for all stores
+        # self.fullset["store-month-sum"] = self.fullset.groupby(['month', "store"])["sales"].transform(
+        #     "sum")  # total sales of that store  for all items
+        #
+        # print("Processed per item and store")
+        #
+        # # get shifted features for grouped data. Note need to sort first!
+        # self.fullset['store_item_shifted-90'] = self.fullset.groupby(["item", "store"])['sales'].transform(
+        #     lambda x: x.shift(90))  # sales for that item 90 days = 3 months ago
+        # self.fullset['store_item_shifted-180'] = self.fullset.groupby(["item", "store"])['sales'].transform(
+        #     lambda x: x.shift(180))  # sales for that item 180 days = 6 months ago
+        # self.fullset['store_item_shifted-365'] = self.fullset.groupby(["item", "store"])['sales'].transform(
+        #     lambda x: x.shift(365))  # sales for that 1 year  ago
+        #
+        # self.fullset["item-week_shifted-90"] = self.fullset.groupby(['week_of_year', "item"])["sales"].transform(
+        #     lambda x: x.shift(12).sum())  # shifted total sales for that item 12 weeks (3 months) ago
+        # self.fullset["store-week_shifted-90"] = self.fullset.groupby(['week_of_year', "store"])["sales"].transform(
+        #     lambda x: x.shift(12).sum())  # shifted total sales for that store 12 weeks (3 months) ago
+        # self.fullset["item-week_shifted-90"] = self.fullset.groupby(['week_of_year', "item"])["sales"].transform(
+        #     lambda x: x.shift(12).mean())  # shifted mean sales for that item 12 weeks (3 months) ago
+        # self.fullset["store-week_shifted-90"] = self.fullset.groupby(['week_of_year', "store"])["sales"].transform(
+        #     lambda x: x.shift(12).mean())  # shifted mean sales for that store 12 weeks (3 months) ago
+        # print("Processed shifted")
+
         #
         # temp, feature_names = weekday(self.fullset["date"])
         # self.fullset = pd.concat([self.fullset, temp], axis=1)
         # self.feature_names += feature_names
         # print("Processed weekday")
         #
-        # temp, feature_names = week_of_year(self.fullset["date"])
-        # self.fullset = pd.concat([self.fullset, temp], axis=1)
-        # self.feature_names += feature_names
-        # print("Processed week_of_year")
+
 
     def get_split_in_year_time_series(self):
         X_ts_train = list()
@@ -116,8 +147,6 @@ class Dataset:
                 X_ts_test.append(self.train_target[self.train_target["id"].isin(X_index_test)]["sales"].tolist())
 
 
-
-
         # TODO one function call
         X_train = np.array(X_ts_train)
         X_train = X_train.reshape((len(X_ts_train), 365, 1))
@@ -144,4 +173,5 @@ class Dataset:
 if __name__ == '__main__':
     dataset = Dataset()
 
-    dataset.fullset.head()
+    a, b, c, d, e = dataset.get_split_in_year_time_series()
+    print("asdasd")

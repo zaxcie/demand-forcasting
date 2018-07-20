@@ -71,6 +71,6 @@ def month(series, initial_date):
 
 def week_of_year(series):
     df = series.dt.weekofyear
-    df = df.rename("weekofyear")
+    df = df.rename("week_of_year")
 
     return df, [df.name]

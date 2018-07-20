@@ -45,9 +45,7 @@ if __name__ == '__main__':
             json.dump(model.to_json(), f)
 
         model.compile(loss=loss, optimizer=optimizer, metrics=["mse", keras_SMAPE])
-        model.fit(X_train, Y_train, epochs=100, batch_size=None, verbose=1, steps_per_epoch=2,
-                  callbacks=[early_stopping, tensorboard, checkpoint],
+        model.fit(X_train[:32], Y_train[:32], epochs=1, batch_size=1, verbose=1, steps_per_epoch=None,
+                  callbacks=[early_stopping, tensorboard, checkpoint, history],
                   validation_data=(X_val, Y_val))
-
-        print(history.history)
 
